@@ -49,20 +49,65 @@ const InfoLine = styled.span`
   `}
 `;
 
+const WsButton = styled.button`
+  margin-top: 20px;
+  padding: 10px 15px;
+
+  appearance: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 16px;
+
+  &:hover {
+    color: ${({ isConnected }) => (isConnected ? 'red' : 'green')};
+  }
+`;
+
 class Ticker extends Component {
+  state = {
+    isConnected: false,
+  };
+
   componentDidMount() {
     const { connectToTicker } = this.props;
-    connectToApi('ticker', connectToTicker);
+    this.socket = connectToApi('ticker', connectToTicker, this.handleDisconnect);
+
+    this.setState({
+      isConnected: true,
+    });
   }
 
   componentWillUnmount() {
-    WebSocket.close();
+    this.socket.close();
   }
 
+  handleDisconnect = () => {
+    this.setState({ isConnected: false });
+  };
+
+  handleWsButtonClick = e => {
+    e.preventDefault();
+
+    const { connectToTicker } = this.props;
+    const { isConnected } = this.state;
+
+    if (isConnected) {
+      this.socket.close();
+    } else {
+      this.socket = connectToApi('ticker', connectToTicker, this.handleDisconnect);
+
+      this.setState({
+        isConnected: true,
+      });
+    }
+  };
+
   render() {
-    const {
-      ticker: { ticker },
-    } = this.props;
+    const { ticker } = this.props;
+
+    const { isConnected } = this.state;
 
     if (!ticker) {
       return null;
@@ -94,13 +139,16 @@ class Ticker extends Component {
             <InfoLine>{`HIGH: ${ticker.high}`}</InfoLine>
           </InfoWrapper>
         </Wrapper>
+        <WsButton isConnected={isConnected} onClick={this.handleWsButtonClick}>
+          {isConnected ? 'Disable ticker WS' : 'Enable ticker WS'}
+        </WsButton>
       </>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  ticker: state.ticker,
+  ticker: state.ticker.ticker,
 });
 
 const mapDispatchToProps = dispatch => ({
