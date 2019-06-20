@@ -13,6 +13,7 @@ module.exports = {
     'no-await-in-loop': 'off',
     'no-nested-ternary': 'off',
     camelcase: 'off',
+    'react/jsx-filename-extension': 'off',
   },
   env: {
     browser: true,
