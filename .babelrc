@@ -1,0 +1,13 @@
+{
+  "presets": ["react-app", "@babel/preset-env"],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./src"]
+      }
+    ],
+    "@babel/plugin-proposal-export-default-from",
+    "babel-plugin-styled-components"
+  ]
+}

@@ -1,5 +1,4 @@
 module.exports = {
-  parser: 'babel-eslint',
   extends: ['airbnb', 'prettier'],
   plugins: ['react', 'prettier'],
   rules: {
@@ -14,6 +13,8 @@ module.exports = {
     'no-nested-ternary': 'off',
     camelcase: 'off',
     'react/jsx-filename-extension': 'off',
+    'react/prop-types': 'off',
+    'import/prefer-default-export': 'off',
   },
   env: {
     browser: true,
