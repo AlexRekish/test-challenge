@@ -1,13 +1,13 @@
 import { WS_API_URL } from 'constants';
 
-function connectToApi(channel, cb) {
+function connectToApi(channel, cb, disconnectCb) {
   if (!channel || !cb) {
     return;
   }
 
-  const tickerSocket = new WebSocket(WS_API_URL);
+  const socket = new WebSocket(WS_API_URL);
 
-  tickerSocket.onopen = () => {
+  socket.onopen = () => {
     console.log('Connected to socket');
 
     const msg = JSON.stringify({
@@ -16,12 +16,18 @@ function connectToApi(channel, cb) {
       symbol: 'tBTCUSD',
     });
 
-    tickerSocket.onmessage = message => {
+    socket.onclose = () => {
+      console.log('Disconnected from socket');
+      disconnectCb();
+    };
+
+    socket.onmessage = message => {
       cb(message.data);
     };
 
-    tickerSocket.send(msg);
+    socket.send(msg);
   };
+  return socket;
 }
 
 export default connectToApi;
