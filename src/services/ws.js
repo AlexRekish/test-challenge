@@ -17,7 +17,6 @@ function connectToApi(channel, cb) {
     });
 
     tickerSocket.onmessage = message => {
-      console.log(message);
       cb(message.data);
     };
 
