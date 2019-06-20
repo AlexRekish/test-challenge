@@ -6,18 +6,7 @@ import format from 'date-fns/format';
 
 import { getTradesSuccess } from '../../store/actions';
 import { connectToApi } from '../../services';
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  border: 1px solid #fff;
-`;
-
-const Header = styled.h2`
-  margin: 0;
-  padding: 20px 0 15px;
-`;
+import { Wrapper, Header, WsButton, ConnectionIndicator } from '../../components';
 
 const Table = styled.table`
   width: 1000px;
@@ -46,22 +35,6 @@ const Td = styled.td`
   padding: 10px 20px;
   border-top: 1px solid #fff;
   font-size: 16px;
-`;
-
-const WsButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 15px;
-
-  appearance: none;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: color 0.2s;
-  font-size: 16px;
-
-  &:hover {
-    color: ${({ isConnected }) => (isConnected ? 'red' : 'green')};
-  }
 `;
 
 class Trades extends Component {
@@ -113,7 +86,10 @@ class Trades extends Component {
 
     return (
       <>
-        <Header>Trades</Header>
+        <Header>
+          Trades
+          <ConnectionIndicator isConnected={isConnected} />
+        </Header>
         <Wrapper>
           <Table>
             <thead>
