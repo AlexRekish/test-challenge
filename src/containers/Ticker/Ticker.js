@@ -5,19 +5,7 @@ import is from 'styled-is';
 
 import { getTickerSuccess } from '../../store/actions';
 import { connectToApi } from '../../services';
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  border: 1px solid #fff;
-  border-radius: 4px;
-`;
-
-const Header = styled.h2`
-  margin: 0;
-  padding: 20px 0 15px;
-`;
+import { Wrapper, Header, WsButton, ConnectionIndicator } from '../../components';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -47,22 +35,6 @@ const InfoLine = styled.span`
     text-decoration: underline;
     cursor: help;
   `}
-`;
-
-const WsButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 15px;
-
-  appearance: none;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: color 0.2s;
-  font-size: 16px;
-
-  &:hover {
-    color: ${({ isConnected }) => (isConnected ? 'red' : 'green')};
-  }
 `;
 
 class Ticker extends Component {
@@ -115,7 +87,10 @@ class Ticker extends Component {
 
     return (
       <>
-        <Header>Ticker</Header>
+        <Header>
+          Ticker
+          <ConnectionIndicator isConnected={isConnected} />
+        </Header>
         <Wrapper>
           <InfoWrapper>
             <InfoLine header>BTC/USD</InfoLine>
